@@ -6,14 +6,15 @@ import ResultsTitle from "../../components/events/results-title";
 import Button from "../../components/button";
 import ErrorAlert from "../../components/error-alert";
 import useSWR from "swr";
+import Head from "next/head";
 
 function FilteredEventsPage(props) {
   // CLIENT_SIDE FETCHING
 
   // const [loadedEvents, setLoadedEvents] = useState();
-  // const router = useRouter();
+  const router = useRouter();
 
-  // const filterData = router.query.slug;
+  const filterData = router.query.slug;
 
   // const { data, error } = useSWR(
   //   "https://nextjs-course-c3707-default-rtdb.firebaseio.com/events.json"
@@ -37,11 +38,11 @@ function FilteredEventsPage(props) {
   //   return <p className="center">Loading...</p>;
   // }
 
-  // const filteredYear = filterData[0];
-  // const filteredMonth = filterData[1];
+  const filteredYear = filterData[0];
+  const filteredMonth = filterData[1];
 
-  // const numYear = +filteredYear;
-  // const numMonth = +filteredMonth;
+  const numYear = +filteredYear;
+  const numMonth = +filteredMonth;
 
   // if (
   //   isNaN(numYear) ||
@@ -71,9 +72,20 @@ function FilteredEventsPage(props) {
   //   );
   // });
 
+  const pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${numMonth}/${numYear}.`}
+      />
+    </Head>
+  );
+
   if (props.hasError) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>Invalid filter. Please adjust your values!</p>
         </ErrorAlert>
@@ -89,6 +101,7 @@ function FilteredEventsPage(props) {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
@@ -103,6 +116,7 @@ function FilteredEventsPage(props) {
 
   return (
     <Fragment>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </Fragment>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "../../styles/event-item.module.css";
 import Button from "../button";
 import DateIcon from "../icons/date-icon";
@@ -18,8 +19,8 @@ function EventItem(props) {
   const exploreLink = `/events/${id}`;
 
   return (
-    <li className={styles.item}>
-      <img src={image} alt={title} />
+    <div className={styles.item}>
+      <Image src={image} alt={title} width={300} height={200} />
       <div className={styles.content}>
         <div className={styles.summary}>
           <h2>{title}</h2>
@@ -41,7 +42,7 @@ function EventItem(props) {
           </Button>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
 

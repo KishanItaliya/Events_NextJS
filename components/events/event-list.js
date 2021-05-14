@@ -5,7 +5,7 @@ function EventList(props) {
   const { items } = props;
 
   return (
-    <ul className={styles.list}>
+    <div className={styles.list}>
       {items.map((event) => (
         <EventItem
           key={event.id}
@@ -16,7 +16,7 @@ function EventList(props) {
           image={event.image}
         />
       ))}
-    </ul>
+    </div>
   );
 }
 
