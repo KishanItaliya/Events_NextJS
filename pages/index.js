@@ -1,5 +1,7 @@
 import { getFeaturedEvents } from "../services/api-utils";
 import EventList from "../components/events/event-list";
+import "react-toastify/dist/ReactToastify.css";
+import NewsletterRegistration from "../components/input/newsletter-registration";
 import Head from "next/head";
 
 function HomePage(props) {
@@ -12,6 +14,7 @@ function HomePage(props) {
           content="Find a lot of great events that allow you to evolve..."
         />
       </Head>
+      <NewsletterRegistration />
       <EventList items={props.events} />
     </div>
   );

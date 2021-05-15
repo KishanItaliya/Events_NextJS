@@ -3,6 +3,7 @@ import { getFeaturedEvents, getEventById } from "../../services/api-utils";
 import EventSummary from "../../components/event-detail/event-summary";
 import EventLogistics from "../../components/event-detail/event-logistics";
 import EventContent from "../../components/event-detail/event-content";
+import Comments from "../../components/input/comments";
 import ErrorAlert from "../../components/error-alert";
 import Loader from "react-loader-spinner";
 import Head from "next/head";
@@ -40,6 +41,7 @@ function EventDetailPage(props) {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </Fragment>
   );
 }
