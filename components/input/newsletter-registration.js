@@ -1,12 +1,20 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import styles from "../../styles/newsletter-registration.module.css";
+import NotificationContext from "../../context/notification-context";
 
 function NewsletterRegistration() {
   const emailInputRef = useRef();
+  const notificationCtx = useContext(NotificationContext);
 
   function registrationHandler(event) {
     event.preventDefault();
+
+    notificationCtx.showNotification({
+      title: "Signing up...",
+      message: "Registering for newsletter.",
+      status: "pending",
+    });
 
     const email = emailInputRef.current.value;
 
@@ -17,20 +25,41 @@ function NewsletterRegistration() {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((response) => {
-      if (response.status == 201) {
-        toast.success("Signed up successfully...");
-      }
-      if (response.status == 400) {
-        toast.warn("User already registered!");
-      }
-      if (response.status == 500) {
-        toast.error("Internal Server Error...");
-      }
-      console.log(response.status);
-      emailInputRef.current.value = "";
-      response.json();
-    });
+    })
+      .then((response) => {
+        if (response.status == 201) {
+          toast.success("Signed up successfully...");
+        }
+        if (response.status == 400) {
+          toast.warn("User already registered!");
+        }
+        if (response.status == 500) {
+          toast.error("Internal Server Error...");
+        }
+        emailInputRef.current.value = "";
+
+        if (response.ok) {
+          return response.json();
+        }
+
+        return response.json().then((data) => {
+          throw new Error(data.message || "Something went wrong!");
+        });
+      })
+      .then((data) => {
+        notificationCtx.showNotification({
+          title: "Success!",
+          message: "Successfully registered for newsletter.",
+          status: "success",
+        });
+      })
+      .catch((error) => {
+        notificationCtx.showNotification({
+          title: "Error!",
+          message: error.message || "Something went wrong!",
+          status: "error",
+        });
+      });
   }
 
   return (
